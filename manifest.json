@@ -1,6 +1,6 @@
 {
-  "name": "ALEN+PRO Suite",
-  "short_name": "Suite",
+  "name": "APu",
+  "short_name": "APu",
   "start_url": "/alenpro-hub/",
   "display": "standalone",
   "background_color": "#ffffff",
