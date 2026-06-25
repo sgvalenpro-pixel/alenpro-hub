@@ -241,34 +241,19 @@ html,body{min-height:100%;background:#f7f7f5;font-family:-apple-system,BlinkMacS
 
 </div><!-- /hub-screen -->
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyB7KbW_QX-ymuRxwNh9byx6hICLEUcRpKE",
-  authDomain: "alenpro-inventario.firebaseapp.com",
-  databaseURL: "https://alenpro-inventario-default-rtdb.firebaseio.com",
-  projectId: "alenpro-inventario",
-  storageBucket: "alenpro-inventario.firebasestorage.app",
-  messagingSenderId: "507355294371",
-  appId: "1:507355294371:web:d0e14685a8a550400bed16"
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
+<script>
 const SESSION_KEY = 'apu_session';
 
 // Para agregar usuarios: editar este array
 const USUARIOS = [
-  { id: 'samuel',       nombre: 'SAMUEL GUTIERREZ',      pin: 'MTIzNA==' },
-  { id: 'daniela',      nombre: 'DANIELA GUTIERREZ',      pin: 'NDU4OQ==' },
-  { id: 'talento',      nombre: 'TALENTO HUMANO',          pin: 'NzU4NQ==' },
-  { id: 'sst',          nombre: 'SISTEMA DE GESTIÓN SST',  pin: 'OTkxMA==' },
-  { id: 'admin',        nombre: 'ADMINISTRACION',          pin: 'NzIyMA==' },
-  { id: 'calidad',      nombre: 'CALIDAD',                 pin: 'MjU0Mw==' },
-  { id: 'contabilidad', nombre: 'CONTABILIDAD',            pin: 'ODIzMQ==' },
-  { id: 'logistica',    nombre: 'LOGISTICA',               pin: 'MTI0OA==' }
+  { id: 'samuel',       nombre: 'COMERCIAL',              pin: 'MTIzNA==' },
+  { id: 'daniela',      nombre: 'PLANEACION',             pin: 'NDU4OQ==' },
+  { id: 'talento',      nombre: 'TALENTO HUMANO',         pin: 'NzU4NQ==' },
+  { id: 'sst',          nombre: 'SISTEMA DE GESTIÓN SST', pin: 'OTkxMA==' },
+  { id: 'admin',        nombre: 'ADMINISTRACION',         pin: 'NzIyMA==' },
+  { id: 'calidad',      nombre: 'CALIDAD',                pin: 'MjU0Mw==' },
+  { id: 'contabilidad', nombre: 'CONTABILIDAD',           pin: 'ODIzMQ==' },
+  { id: 'logistica',    nombre: 'LOGISTICA',              pin: 'MTI0OA==' }
 ];
 
 const loginScreen = document.getElementById('login-screen');
