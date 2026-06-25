@@ -243,7 +243,7 @@ html,body{min-height:100%;background:#f7f7f5;font-family:-apple-system,BlinkMacS
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7KbW_QX-ymuRxwNh9byx6hICLEUcRpKE",
@@ -258,13 +258,14 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const SESSION_KEY = 'apu_session';
-const USERS_PATH = 'apu_usuarios';
 
-// Usuarios locales — login no depende de Firebase
-const USUARIOS = {
-  "SAMUEL GUTIERREZ": btoa("1234"),
-  "DANIELA GUTIERREZ": btoa("4589")
-};
+// Para agregar usuarios: editar este array
+const USUARIOS = [
+  { id: 'samuel',  nombre: 'SAMUEL GUTIERREZ',      pin: 'MTIzNA==' },
+  { id: 'daniela', nombre: 'DANIELA GUTIERREZ',      pin: 'NDU4OQ==' },
+  { id: 'talento', nombre: 'TALENTO HUMANO',          pin: 'NzU4NQ==' },
+  { id: 'sst',     nombre: 'SISTEMA DE GESTIÓN SST',  pin: 'OTkxMA==' }
+];
 
 const loginScreen = document.getElementById('login-screen');
 const hubScreen = document.getElementById('hub-screen');
@@ -309,31 +310,14 @@ function showLogin(){
   clearPin(true);
 }
 
-async function loadUserOptions(){
-  console.log('[APu] Cargando usuarios...');
-
-  // Intento diagnóstico a Firebase para ver qué hay en el nodo
-  try {
-    console.log('[APu] Consultando Firebase nodo:', USERS_PATH);
-    const snap = await get(ref(db, USERS_PATH));
-    if (snap.exists()) {
-      console.log('[APu] Firebase devolvió datos:', snap.val());
-    } else {
-      console.log('[APu] Firebase: nodo vacío o inexistente.');
-    }
-  } catch (err) {
-    console.log('[APu] Error al consultar Firebase:', err.message);
-  }
-
-  // Login usa siempre los usuarios locales — sin bloqueo de red
+function loadUserOptions(){
   loginUser.innerHTML = '<option value="" disabled selected>Selecciona tu usuario</option>';
-  Object.keys(USUARIOS).sort().forEach(name => {
+  USUARIOS.forEach(u => {
     const opt = document.createElement('option');
-    opt.value = name;
-    opt.textContent = name;
+    opt.value = u.id;
+    opt.textContent = u.nombre;
     loginUser.appendChild(opt);
   });
-  console.log('[APu] Usuarios cargados:', Object.keys(USUARIOS));
 }
 
 loginForm.addEventListener('submit', async (e) => {
@@ -350,18 +334,13 @@ loginForm.addEventListener('submit', async (e) => {
     return;
   }
   loginBtn.disabled = true;
-  try {
-    const storedPin = USUARIOS[username];
-    if (storedPin && btoa(pin) === storedPin) {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user: username, ts: Date.now() }));
-      showHub(username);
-    } else {
-      loginError.textContent = 'PIN incorrecto.';
-      clearPin(true);
-    }
-  } catch (err) {
-    loginError.textContent = 'Error. Intenta de nuevo.';
-  } finally {
+  const usuario = USUARIOS.find(u => u.id === username);
+  if (usuario && btoa(pin) === usuario.pin) {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user: usuario.nombre, ts: Date.now() }));
+    showHub(usuario.nombre);
+  } else {
+    loginError.textContent = 'PIN incorrecto.';
+    clearPin(true);
     loginBtn.disabled = false;
   }
 });
