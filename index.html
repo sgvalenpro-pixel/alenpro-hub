@@ -337,6 +337,7 @@ loginForm.addEventListener('submit', async (e) => {
   const usuario = USUARIOS.find(u => u.id === username);
   if (usuario && btoa(pin) === usuario.pin) {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user: usuario.nombre, ts: Date.now() }));
+    loginBtn.disabled = false;
     showHub(usuario.nombre);
   } else {
     loginError.textContent = 'PIN incorrecto.';
@@ -347,7 +348,9 @@ loginForm.addEventListener('submit', async (e) => {
 
 logoutBtn.addEventListener('click', () => {
   sessionStorage.removeItem(SESSION_KEY);
-  loginUser.value = '';
+  loginUser.selectedIndex = 0;
+  loginError.textContent = '';
+  loginBtn.disabled = false;
   showLogin();
 });
 
