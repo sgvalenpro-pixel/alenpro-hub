@@ -243,7 +243,7 @@ html,body{min-height:100%;background:#f7f7f5;font-family:-apple-system,BlinkMacS
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7KbW_QX-ymuRxwNh9byx6hICLEUcRpKE",
@@ -260,6 +260,12 @@ const db = getDatabase(app);
 const SESSION_KEY = 'apu_session';
 const USERS_PATH = 'apu_usuarios';
 
+// Usuarios locales — login no depende de Firebase
+const USUARIOS = {
+  "SAMUEL GUTIERREZ": btoa("1234"),
+  "DANIELA GUTIERREZ": btoa("4589")
+};
+
 const loginScreen = document.getElementById('login-screen');
 const hubScreen = document.getElementById('hub-screen');
 const loginUser = document.getElementById('loginUser');
@@ -271,11 +277,6 @@ const logoutBtn = document.getElementById('logoutBtn');
 const sessionUser = document.getElementById('sessionUser');
 
 document.getElementById('loginLogo').src = document.querySelector('.header img').src;
-
-async function sha256Hex(text){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
 
 function getPin(){
   return pinDigits.map(d => d.value).join('');
@@ -309,21 +310,30 @@ function showLogin(){
 }
 
 async function loadUserOptions(){
-  const usersRef = ref(db, USERS_PATH);
-  let snap = await get(usersRef);
-  if (!snap.exists()) {
-    const defaultHash = await sha256Hex('1234');
-    await set(usersRef, { "SAMUEL GUTIERREZ": defaultHash });
-    snap = await get(usersRef);
+  console.log('[APu] Cargando usuarios...');
+
+  // Intento diagnóstico a Firebase para ver qué hay en el nodo
+  try {
+    console.log('[APu] Consultando Firebase nodo:', USERS_PATH);
+    const snap = await get(ref(db, USERS_PATH));
+    if (snap.exists()) {
+      console.log('[APu] Firebase devolvió datos:', snap.val());
+    } else {
+      console.log('[APu] Firebase: nodo vacío o inexistente.');
+    }
+  } catch (err) {
+    console.log('[APu] Error al consultar Firebase:', err.message);
   }
-  const data = snap.val() || {};
+
+  // Login usa siempre los usuarios locales — sin bloqueo de red
   loginUser.innerHTML = '<option value="" disabled selected>Selecciona tu usuario</option>';
-  Object.keys(data).sort().forEach(name => {
+  Object.keys(USUARIOS).sort().forEach(name => {
     const opt = document.createElement('option');
     opt.value = name;
     opt.textContent = name;
     loginUser.appendChild(opt);
   });
+  console.log('[APu] Usuarios cargados:', Object.keys(USUARIOS));
 }
 
 loginForm.addEventListener('submit', async (e) => {
@@ -341,10 +351,8 @@ loginForm.addEventListener('submit', async (e) => {
   }
   loginBtn.disabled = true;
   try {
-    const userSnap = await get(ref(db, `${USERS_PATH}/${username}`));
-    const storedHash = userSnap.exists() ? userSnap.val() : null;
-    const hash = await sha256Hex(pin);
-    if (storedHash && storedHash === hash) {
+    const storedPin = USUARIOS[username];
+    if (storedPin && btoa(pin) === storedPin) {
       sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user: username, ts: Date.now() }));
       showHub(username);
     } else {
@@ -352,7 +360,7 @@ loginForm.addEventListener('submit', async (e) => {
       clearPin(true);
     }
   } catch (err) {
-    loginError.textContent = 'Error de conexión. Intenta de nuevo.';
+    loginError.textContent = 'Error. Intenta de nuevo.';
   } finally {
     loginBtn.disabled = false;
   }
