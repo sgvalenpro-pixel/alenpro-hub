@@ -269,22 +269,38 @@ dots.forEach(function(d,i){ d.addEventListener('click', function(){ jumpTo(i); }
 function jumpTo(n) {
   if (n === cur) return;
   var dir = n > cur ? 1 : -1;
-  slides[cur].classList.remove('active');
-  if (dir > 0) {
-    slides[cur].classList.add('behind');
-    setTimeout(function(){ slides[cur].classList.remove('behind'); }, 320);
-  }
-  var prev = cur;
+  var from = slides[cur];
   cur = n;
-  slides[cur].style.transition = 'none';
-  slides[cur].style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
-  slides[cur].style.opacity = '0';
-  slides[cur].offsetHeight;
-  slides[cur].style.transition = '';
-  slides[cur].style.transform = '';
-  slides[cur].style.opacity = '';
-  slides[cur].classList.add('active');
-  update();
+  var to = slides[cur];
+
+  // Position incoming slide off-screen instantly (no transition yet)
+  to.style.transition = 'none';
+  to.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  to.style.opacity = '0';
+  to.offsetHeight; // force layout to commit starting position
+
+  // Double rAF: first frame commits the starting position to the GPU,
+  // second frame starts the transition so the browser animates from there.
+  // Without this, clearing transition:none and changing transform in the
+  // same synchronous block causes an instant jump (no animation).
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      // Exit old slide (captured before cur changed)
+      from.classList.remove('active');
+      if (dir > 0) {
+        from.classList.add('behind');
+        setTimeout(function() { from.classList.remove('behind'); }, 400);
+      }
+
+      // Enter new slide: restore CSS transition and animate to center
+      to.style.transition = '';
+      to.style.transform = '';
+      to.style.opacity = '';
+      to.classList.add('active');
+
+      update();
+    });
+  });
 }
 
 function go(dir) {
