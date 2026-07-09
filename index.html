@@ -244,6 +244,10 @@ html,body{min-height:100%;background:#f7f7f5;font-family:-apple-system,BlinkMacS
 
 </div><!-- /hub-screen -->
 
+<div id="loading-overlay" style="display:none;position:fixed;inset:0;background:#ffffff;z-index:200;">
+  <iframe id="loadingFrame" src="loading.html" style="width:100%;height:100vh;border:none;overflow:hidden;" scrolling="no"></iframe>
+</div>
+
 <script>
 const SESSION_KEY = 'apu_session';
 
@@ -269,6 +273,7 @@ const loginBtn = loginForm.querySelector('.login-btn');
 const pinDigits = Array.from(document.querySelectorAll('.pin-digit'));
 const logoutBtn = document.getElementById('logoutBtn');
 const sessionUser = document.getElementById('sessionUser');
+const loadingOverlay = document.getElementById('loading-overlay');
 
 document.getElementById('loginLogo').src = document.querySelector('.header img').src;
 
@@ -295,6 +300,22 @@ function showHub(username){
   loginScreen.style.display = 'none';
   hubScreen.style.display = '';
   sessionUser.textContent = username;
+}
+
+function showHubWithLoading(username){
+  loginScreen.style.display = 'none';
+  sessionUser.textContent = username;
+  hubScreen.style.transition = 'none';
+  hubScreen.style.opacity = '0';
+  hubScreen.style.display = '';
+  loadingOverlay.style.display = 'block';
+  setTimeout(() => {
+    loadingOverlay.style.display = 'none';
+    requestAnimationFrame(() => {
+      hubScreen.style.transition = 'opacity 0.5s ease';
+      hubScreen.style.opacity = '1';
+    });
+  }, 4500);
 }
 
 function showLogin(){
@@ -331,7 +352,7 @@ loginForm.addEventListener('submit', async (e) => {
   if (usuario && btoa(pin) === usuario.pin) {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user: usuario.nombre, ts: Date.now() }));
     loginBtn.disabled = false;
-    showHub(usuario.nombre);
+    showHubWithLoading(usuario.nombre);
   } else {
     loginError.textContent = 'PIN incorrecto.';
     clearPin(true);
