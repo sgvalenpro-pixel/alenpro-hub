@@ -60,12 +60,71 @@ html,body{min-height:100%;background:#f7f7f5;font-family:-apple-system,BlinkMacS
 .btn-salir{background:none;border:1px solid #e0e0dd;color:#777;font-size:11px;font-weight:600;padding:6px 12px;border-radius:100px;cursor:pointer;margin-top:6px}
 .btn-salir:hover{border-color:#F5C200;color:#111111}
 .session-user{font-size:11px;color:#888;display:block}
+.hub-main{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:16px;padding:0 16px}
+.apps-col{min-width:0}
+.calendar-col{min-width:0}
+@media(min-width:700px){
+  .hub-main{grid-template-columns:1fr 300px;align-items:start;padding:0 16px}
+  .calendar-col{position:sticky;top:86px}
+}
+.calendar-card{background:#ffffff;border:1px solid #e0e0dd;border-radius:14px;padding:16px}
+.calendar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.calendar-header-left{display:flex;align-items:center;gap:10px}
+.calendar-title{font-size:16px;font-weight:600}
+.calendar-nav{display:flex;align-items:center;gap:8px}
+.calendar-nav button{background:none;border:1px solid #e0e0dd;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer;color:#555}
+.calendar-nav button:hover{border-color:#F5C200;color:#111111}
+.calendar-today-btn{font-size:11px;font-weight:600;color:#555;background:#f7f7f5;border:1px solid #e0e0dd;border-radius:100px;padding:5px 12px;cursor:pointer}
+.calendar-today-btn:hover{border-color:#F5C200;color:#111111}
+.calendar-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.calendar-weekdays span{text-align:center;font-size:11px;font-weight:700;color:#999;text-transform:uppercase;padding:4px 0;display:block}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.calendar-day{min-height:38px;border:1px solid #f0f0ee;border-radius:8px;padding:3px 2px;font-size:11px;color:#333;background:#fafafa;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.calendar-day.other-month{opacity:.35;cursor:default}
+.calendar-day.today{border-color:#F5C200;border-width:2px;background:#FFFBEB}
+.calendar-day.has-events{background:#FFFBEE}
+.calendar-day:not(.other-month):hover{border-color:#F5C200}
+.calendar-day-num{font-size:11px;font-weight:600;line-height:1}
+.calendar-day.today .calendar-day-num{color:#111111;background:#F5C200;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%}
+.calendar-day-dot{width:5px;height:5px;border-radius:50%;background:#F5C200}
+.calendar-day-count{font-size:8px;font-weight:700;color:#8a6d00;line-height:1}
+.calendar-add-row{text-align:right;margin-top:14px}
+.calendar-add-btn{background:#F5C200;color:#111111;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer}
+.calendar-add-btn:active{transform:scale(.98)}
+.calendar-upcoming{margin-top:16px;border-top:1px solid #f0f0ee;padding-top:14px}
+.calendar-upcoming-title{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px}
+.calendar-upcoming-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f7f7f5;font-size:13px}
+.calendar-upcoming-date{background:#f7f7f5;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:700;color:#555;flex-shrink:0;min-width:52px;text-align:center}
+.calendar-upcoming-title-text{flex:1}
+.calendar-upcoming-actions{display:flex;gap:6px}
+.calendar-upcoming-actions button{background:none;border:none;cursor:pointer;font-size:14px;color:#999}
+.calendar-upcoming-actions button:hover{color:#111111}
+.calendar-empty{font-size:12px;color:#aaa;padding:8px 0}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:150;padding:20px}
+.modal-card{background:#ffffff;border-radius:16px;padding:26px;max-width:360px;width:100%;text-align:left}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:16px}
+.modal-field{margin-bottom:14px}
+.modal-field label{display:block;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.modal-field input,.modal-field textarea{width:100%;padding:10px 12px;border:1px solid #e0e0dd;border-radius:8px;font-size:14px;background:#fafafa;color:#111111;font-family:inherit;resize:vertical}
+.modal-actions{display:flex;gap:10px;margin-top:6px}
+.modal-btn{flex:1;padding:11px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none}
+.modal-btn-cancel{background:#f0f0ee;color:#555}
+.modal-btn-save{background:#F5C200;color:#111111}
+.modal-btn-delete{background:none;color:#d33;border:1px solid #f0c0c0;width:100%;margin-top:10px;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.modal-error{color:#d33;font-size:12px;margin-top:8px;min-height:14px}
+.day-event-item{padding:10px 0;border-bottom:1px solid #f0f0ee}
+.day-event-item:last-child{border-bottom:none}
+.day-event-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.day-event-title{font-weight:600;font-size:14px}
+.day-event-desc{font-size:12px;color:#777;margin-top:2px}
 @media(max-width:480px){
   .grid{grid-template-columns:1fr;padding:16px 12px;gap:10px}
   .hero{padding:24px 16px 32px}
   .hero h1{font-size:18px}
   .login-card{padding:28px 22px 24px}
   .pin-digit{width:42px;height:50px;font-size:20px}
+  .calendar-card{padding:12px}
+  .calendar-day{min-height:34px}
 }
 </style>
 </head>
@@ -107,6 +166,9 @@ html,body{min-height:100%;background:#f7f7f5;font-family:-apple-system,BlinkMacS
     <button class="btn-salir" id="logoutBtn" type="button">Salir</button>
   </div>
 </div>
+
+<div class="hub-main">
+<div class="apps-col">
 
 <div class="hero">
   <p></p>
@@ -236,6 +298,37 @@ html,body{min-height:100%;background:#f7f7f5;font-family:-apple-system,BlinkMacS
 
 </div>
 
+</div><!-- /apps-col -->
+
+<aside class="calendar-col">
+  <div class="calendar-card">
+    <div class="calendar-header">
+      <div class="calendar-header-left">
+        <div class="card-icon" style="background:#FFF3D6;width:32px;height:32px;font-size:16px">📅</div>
+        <div class="calendar-title" id="calTitle">&nbsp;</div>
+      </div>
+      <div class="calendar-nav">
+        <button id="calPrev" type="button" aria-label="Mes anterior">‹</button>
+        <button class="calendar-today-btn" id="calToday" type="button">Hoy</button>
+        <button id="calNext" type="button" aria-label="Mes siguiente">›</button>
+      </div>
+    </div>
+    <div class="calendar-weekdays">
+      <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+    </div>
+    <div class="calendar-grid" id="calGrid"></div>
+    <div class="calendar-add-row">
+      <button class="calendar-add-btn" id="calAddBtn" type="button">+ Agregar fecha importante</button>
+    </div>
+    <div class="calendar-upcoming">
+      <div class="calendar-upcoming-title">Próximas fechas importantes</div>
+      <div id="calUpcomingList"></div>
+    </div>
+  </div>
+</aside>
+
+</div><!-- /hub-main -->
+
 <div class="footer">
   <a href="tutorial.html" class="tutorial-link">¿Cómo usar APu? Ver tutorial →</a><br>
   <strong>ALEN+PRO</strong> · Alimento Energético Proteico S.A.S · NIT 800.183.642-5<br>
@@ -244,10 +337,50 @@ html,body{min-height:100%;background:#f7f7f5;font-family:-apple-system,BlinkMacS
 
 </div><!-- /hub-screen -->
 
+<div class="modal-overlay" id="dayModal">
+  <div class="modal-card">
+    <div class="modal-title" id="dayModalTitle">&nbsp;</div>
+    <div id="dayModalEventsList"></div>
+    <div class="modal-actions">
+      <button type="button" class="modal-btn modal-btn-cancel" id="dayModalCloseBtn">Cerrar</button>
+      <button type="button" class="modal-btn modal-btn-save" id="dayModalAddBtn">+ Agregar evento</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="eventModal">
+  <div class="modal-card">
+    <div class="modal-title" id="eventModalTitle">Nueva fecha importante</div>
+    <form id="eventForm">
+      <div class="modal-field">
+        <label for="eventDateInput">Fecha</label>
+        <input type="date" id="eventDateInput" required>
+      </div>
+      <div class="modal-field">
+        <label for="eventTitleInput">Título</label>
+        <input type="text" id="eventTitleInput" maxlength="80" placeholder="Ej: Pago de nómina" required>
+      </div>
+      <div class="modal-field">
+        <label for="eventDescInput">Descripción (opcional)</label>
+        <textarea id="eventDescInput" rows="2" maxlength="200"></textarea>
+      </div>
+      <div class="modal-error" id="eventFormError"></div>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn modal-btn-cancel" id="eventCancelBtn">Cancelar</button>
+        <button type="submit" class="modal-btn modal-btn-save" id="eventSaveBtn">Guardar</button>
+      </div>
+      <button type="button" class="modal-btn-delete" id="eventDeleteBtn" style="display:none">Eliminar fecha</button>
+    </form>
+  </div>
+</div>
+
 <div id="loading-overlay" style="display:none;position:fixed;inset:0;background:#ffffff;z-index:200;">
   <iframe id="loadingFrame" src="loading.html" style="width:100%;height:100vh;border:none;overflow:hidden;" scrolling="no"></iframe>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 const SESSION_KEY = 'apu_session';
 
@@ -261,7 +394,8 @@ const USUARIOS = [
   { id: 'calidad',      nombre: 'CALIDAD',                pin: 'MjU0Mw==' },
   { id: 'contabilidad', nombre: 'CONTABILIDAD',           pin: 'ODIzMQ==' },
   { id: 'logistica',    nombre: 'LOGISTICA',              pin: 'MTI0OA==' },
-  { id: 'gerencia',     nombre: 'GERENCIA',               pin: 'MTY2NA==' }
+  { id: 'gerencia',     nombre: 'GERENCIA',               pin: 'MTY2NA==' },
+  { id: 'produccion',   nombre: 'PRODUCCIÓN',             pin: 'NTQ2OA==' }
 ];
 
 const loginScreen = document.getElementById('login-screen');
@@ -367,6 +501,346 @@ logoutBtn.addEventListener('click', () => {
   loginBtn.disabled = false;
   showLogin();
 });
+
+// ---- Calendario de fechas importantes (Firebase Firestore, zona horaria Colombia) ----
+const firebaseConfig = {
+  apiKey: "AIzaSyBgGXrK7o311vy7dCLvI3PMF3qSYmcfEQM",
+  authDomain: "alenpro-calendario.firebaseapp.com",
+  databaseURL: "https://alenpro-calendario-default-rtdb.firebaseio.com",
+  projectId: "alenpro-calendario",
+  storageBucket: "alenpro-calendario.firebasestorage.app",
+  messagingSenderId: "853580536895",
+  appId: "1:853580536895:web:52c17a113dfb52c24d2c8a"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+firebase.auth().signInAnonymously().catch(err => console.error('Firebase auth error:', err));
+
+const TIMEZONE = 'America/Bogota';
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function bogotaTodayParts(){
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: TIMEZONE, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+  const map = {};
+  parts.forEach(p => map[p.type] = p.value);
+  return { year: +map.year, month: +map.month, day: +map.day }; // month: 1-12
+}
+
+function pad2(n){ return String(n).padStart(2, '0'); }
+function dateKey(y, m, d){ return `${y}-${pad2(m + 1)}-${pad2(d)}`; } // m: 0-11 (JS convention)
+
+let todayParts = bogotaTodayParts();
+let todayKey = dateKey(todayParts.year, todayParts.month - 1, todayParts.day);
+let calViewYear = todayParts.year;
+let calViewMonth = todayParts.month - 1; // 0-11
+let calEvents = {}; // { 'YYYY-MM-DD': [ {id, fecha, titulo, descripcion} ] }
+
+const calTitle = document.getElementById('calTitle');
+const calGrid = document.getElementById('calGrid');
+const calPrev = document.getElementById('calPrev');
+const calNext = document.getElementById('calNext');
+const calTodayBtn = document.getElementById('calToday');
+const calAddBtn = document.getElementById('calAddBtn');
+const calUpcomingList = document.getElementById('calUpcomingList');
+const eventModal = document.getElementById('eventModal');
+const eventModalTitle = document.getElementById('eventModalTitle');
+const eventForm = document.getElementById('eventForm');
+const eventDateInput = document.getElementById('eventDateInput');
+const eventTitleInput = document.getElementById('eventTitleInput');
+const eventDescInput = document.getElementById('eventDescInput');
+const eventFormError = document.getElementById('eventFormError');
+const eventCancelBtn = document.getElementById('eventCancelBtn');
+const eventDeleteBtn = document.getElementById('eventDeleteBtn');
+let editingEventId = null;
+
+function openEventModal(dateStr, existing){
+  eventFormError.textContent = '';
+  if (existing) {
+    editingEventId = existing.id;
+    eventModalTitle.textContent = 'Editar fecha importante';
+    eventDateInput.value = existing.fecha;
+    eventTitleInput.value = existing.titulo;
+    eventDescInput.value = existing.descripcion || '';
+    eventDeleteBtn.style.display = 'block';
+  } else {
+    editingEventId = null;
+    eventModalTitle.textContent = 'Nueva fecha importante';
+    eventDateInput.value = dateStr || todayKey;
+    eventTitleInput.value = '';
+    eventDescInput.value = '';
+    eventDeleteBtn.style.display = 'none';
+  }
+  eventModal.style.display = 'flex';
+  setTimeout(() => eventTitleInput.focus(), 50);
+}
+
+function closeEventModal(){
+  eventModal.style.display = 'none';
+  editingEventId = null;
+}
+
+calAddBtn.addEventListener('click', () => openEventModal(todayKey, null));
+eventCancelBtn.addEventListener('click', closeEventModal);
+eventModal.addEventListener('click', (e) => { if (e.target === eventModal) closeEventModal(); });
+
+eventForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fecha = eventDateInput.value;
+  const titulo = eventTitleInput.value.trim();
+  const descripcion = eventDescInput.value.trim();
+  if (!fecha || !titulo) {
+    eventFormError.textContent = 'Completa la fecha y el título.';
+    return;
+  }
+  let creadoPor = 'APu';
+  try {
+    const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+    if (session && session.user) creadoPor = session.user;
+  } catch (e) {}
+  try {
+    if (editingEventId) {
+      await db.collection('eventos').doc(editingEventId).update({ fecha, titulo, descripcion, actualizadoPor: creadoPor });
+    } else {
+      await db.collection('eventos').add({ fecha, titulo, descripcion, creadoPor, creadoTs: firebase.firestore.FieldValue.serverTimestamp() });
+    }
+    closeEventModal();
+  } catch (err) {
+    eventFormError.textContent = 'No se pudo guardar. Intenta de nuevo.';
+    console.error(err);
+  }
+});
+
+eventDeleteBtn.addEventListener('click', async () => {
+  if (!editingEventId) return;
+  if (!confirm('¿Eliminar esta fecha importante?')) return;
+  try {
+    await db.collection('eventos').doc(editingEventId).delete();
+    closeEventModal();
+  } catch (err) {
+    eventFormError.textContent = 'No se pudo eliminar. Intenta de nuevo.';
+    console.error(err);
+  }
+});
+
+calPrev.addEventListener('click', () => {
+  calViewMonth--;
+  if (calViewMonth < 0) { calViewMonth = 11; calViewYear--; }
+  renderCalendar();
+});
+calNext.addEventListener('click', () => {
+  calViewMonth++;
+  if (calViewMonth > 11) { calViewMonth = 0; calViewYear++; }
+  renderCalendar();
+});
+calTodayBtn.addEventListener('click', () => {
+  calViewYear = todayParts.year;
+  calViewMonth = todayParts.month - 1;
+  renderCalendar();
+});
+
+function renderCalendar(){
+  calTitle.textContent = `${MESES[calViewMonth]} ${calViewYear}`;
+  calGrid.innerHTML = '';
+
+  const firstOfMonth = new Date(Date.UTC(calViewYear, calViewMonth, 1));
+  const jsWeekday = firstOfMonth.getUTCDay(); // 0=Dom..6=Sáb
+  const leadingBlank = (jsWeekday + 6) % 7; // offset con semana iniciando en lunes
+  const daysInMonth = new Date(Date.UTC(calViewYear, calViewMonth + 1, 0)).getUTCDate();
+  const daysInPrevMonth = new Date(Date.UTC(calViewYear, calViewMonth, 0)).getUTCDate();
+
+  const cells = [];
+  for (let i = leadingBlank; i > 0; i--) cells.push({ day: daysInPrevMonth - i + 1, otherMonth: true });
+  for (let d = 1; d <= daysInMonth; d++) cells.push({ day: d, otherMonth: false });
+  const trailingBlank = (7 - (cells.length % 7)) % 7;
+  for (let d = 1; d <= trailingBlank; d++) cells.push({ day: d, otherMonth: true });
+
+  cells.forEach(cell => {
+    const div = document.createElement('div');
+    div.className = 'calendar-day' + (cell.otherMonth ? ' other-month' : '');
+
+    const numSpan = document.createElement('div');
+    numSpan.className = 'calendar-day-num';
+    numSpan.textContent = cell.day;
+    div.appendChild(numSpan);
+
+    if (!cell.otherMonth) {
+      const key = dateKey(calViewYear, calViewMonth, cell.day);
+      if (key === todayKey) div.classList.add('today');
+
+      const dayEvents = calEvents[key] || [];
+      if (dayEvents.length) {
+        div.classList.add('has-events');
+        const dot = document.createElement('div');
+        dot.className = 'calendar-day-dot';
+        div.appendChild(dot);
+        if (dayEvents.length > 1) {
+          const count = document.createElement('div');
+          count.className = 'calendar-day-count';
+          count.textContent = dayEvents.length;
+          div.appendChild(count);
+        }
+      }
+      div.addEventListener('click', () => openDayModal(key));
+    }
+
+    calGrid.appendChild(div);
+  });
+}
+
+function renderUpcoming(){
+  calUpcomingList.innerHTML = '';
+  const all = Object.values(calEvents).flat()
+    .filter(ev => ev.fecha >= todayKey)
+    .sort((a, b) => a.fecha.localeCompare(b.fecha));
+
+  if (!all.length) {
+    const empty = document.createElement('div');
+    empty.className = 'calendar-empty';
+    empty.textContent = 'No hay fechas importantes próximas.';
+    calUpcomingList.appendChild(empty);
+    return;
+  }
+
+  all.slice(0, 8).forEach(ev => {
+    const [, m, d] = ev.fecha.split('-');
+    const item = document.createElement('div');
+    item.className = 'calendar-upcoming-item';
+
+    const dateEl = document.createElement('div');
+    dateEl.className = 'calendar-upcoming-date';
+    dateEl.textContent = `${d} ${MESES[+m - 1].slice(0, 3)}`;
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'calendar-upcoming-title-text';
+    titleEl.textContent = ev.titulo;
+
+    const actions = document.createElement('div');
+    actions.className = 'calendar-upcoming-actions';
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.textContent = '✏️';
+    editBtn.addEventListener('click', () => openEventModal(ev.fecha, ev));
+    actions.appendChild(editBtn);
+
+    item.appendChild(dateEl);
+    item.appendChild(titleEl);
+    item.appendChild(actions);
+    calUpcomingList.appendChild(item);
+  });
+}
+
+const dayModal = document.getElementById('dayModal');
+const dayModalTitle = document.getElementById('dayModalTitle');
+const dayModalEventsList = document.getElementById('dayModalEventsList');
+const dayModalCloseBtn = document.getElementById('dayModalCloseBtn');
+const dayModalAddBtn = document.getElementById('dayModalAddBtn');
+let currentDayKey = null;
+
+function formatDayLong(key){
+  const [y, m, d] = key.split('-').map(Number);
+  return `${d} de ${MESES[m - 1]} ${y}`;
+}
+
+function openDayModal(key){
+  currentDayKey = key;
+  dayModalTitle.textContent = formatDayLong(key);
+  renderDayModalEvents();
+  dayModal.style.display = 'flex';
+}
+
+function closeDayModal(){
+  dayModal.style.display = 'none';
+  currentDayKey = null;
+}
+
+function renderDayModalEvents(){
+  dayModalEventsList.innerHTML = '';
+  const events = (calEvents[currentDayKey] || []).slice().sort((a, b) => (a.titulo || '').localeCompare(b.titulo || ''));
+
+  if (!events.length) {
+    const empty = document.createElement('div');
+    empty.className = 'calendar-empty';
+    empty.textContent = 'No hay fechas importantes este día.';
+    dayModalEventsList.appendChild(empty);
+    return;
+  }
+
+  events.forEach(ev => {
+    const item = document.createElement('div');
+    item.className = 'day-event-item';
+
+    const row = document.createElement('div');
+    row.className = 'day-event-row';
+
+    const textWrap = document.createElement('div');
+    const titleEl = document.createElement('div');
+    titleEl.className = 'day-event-title';
+    titleEl.textContent = ev.titulo;
+    textWrap.appendChild(titleEl);
+    if (ev.descripcion) {
+      const descEl = document.createElement('div');
+      descEl.className = 'day-event-desc';
+      descEl.textContent = ev.descripcion;
+      textWrap.appendChild(descEl);
+    }
+
+    const actions = document.createElement('div');
+    actions.className = 'calendar-upcoming-actions';
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.textContent = '✏️';
+    editBtn.addEventListener('click', () => { closeDayModal(); openEventModal(ev.fecha, ev); });
+    const delBtn = document.createElement('button');
+    delBtn.type = 'button';
+    delBtn.textContent = '🗑️';
+    delBtn.addEventListener('click', async () => {
+      if (!confirm('¿Eliminar esta fecha importante?')) return;
+      try {
+        await db.collection('eventos').doc(ev.id).delete();
+      } catch (err) {
+        console.error(err);
+      }
+    });
+    actions.appendChild(editBtn);
+    actions.appendChild(delBtn);
+
+    row.appendChild(textWrap);
+    row.appendChild(actions);
+    item.appendChild(row);
+    dayModalEventsList.appendChild(item);
+  });
+}
+
+dayModalCloseBtn.addEventListener('click', closeDayModal);
+dayModal.addEventListener('click', (e) => { if (e.target === dayModal) closeDayModal(); });
+dayModalAddBtn.addEventListener('click', () => { const key = currentDayKey; closeDayModal(); openEventModal(key, null); });
+
+db.collection('eventos').onSnapshot(snapshot => {
+  calEvents = {};
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    if (!data.fecha) return;
+    if (!calEvents[data.fecha]) calEvents[data.fecha] = [];
+    calEvents[data.fecha].push({ id: doc.id, ...data });
+  });
+  renderCalendar();
+  renderUpcoming();
+  if (dayModal.style.display === 'flex' && currentDayKey) renderDayModalEvents();
+}, err => console.error('Error cargando eventos del calendario:', err));
+
+renderCalendar();
+renderUpcoming();
+
+setInterval(() => {
+  const fresh = bogotaTodayParts();
+  const freshKey = dateKey(fresh.year, fresh.month - 1, fresh.day);
+  if (freshKey !== todayKey) {
+    todayParts = fresh;
+    todayKey = freshKey;
+    renderCalendar();
+    renderUpcoming();
+  }
+}, 60000);
 
 (async function init(){
   const session = sessionStorage.getItem(SESSION_KEY);
