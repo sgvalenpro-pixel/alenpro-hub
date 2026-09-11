@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5C400">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Calculadora Embutidos — ALEN+PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--papel:#F5F6F1;--tinta:#16221A;--suave:#5A6A5E;--marca:#F5C400;--soya:#4E7A3A;--linea:#D6DACF;--panel:#FFF;
+        --rojo:#D0021B;--naranja:#E86A00;--azul:#0B5FA5}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--papel);color:var(--tinta);font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.55;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 18px 90px}
+  .top{background:#fff;color:var(--tinta);margin:0 -18px 26px;padding:20px 18px;border-bottom:5px solid var(--marca)}
+  .top .in{max-width:1004px;margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .logo{height:52px;width:auto;flex:0 0 auto}
+  .top h1{font-family:'Archivo Narrow';font-size:clamp(21px,3.4vw,29px);margin:0;line-height:1.1}
+  .top p{margin:2px 0 0;font-size:13.5px;color:var(--suave)}
+  .cabcli{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:13px;color:var(--suave);flex-wrap:wrap}
+  .cabcli input{border:none;border-bottom:1px solid var(--linea);background:none;font-family:inherit;font-size:13.5px;padding:3px 4px;min-width:170px;color:var(--tinta)}
+  h2{font-family:'Archivo Narrow';font-size:21px;margin:32px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--linea)}
+  .pista{font-size:13.5px;color:var(--suave);margin:-4px 0 12px;max-width:72ch}
+  .caja{background:var(--panel);padding:16px 18px;margin-bottom:18px;border:1px solid var(--linea)}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+  label{display:block;font-size:13px;color:var(--suave);margin-bottom:5px}
+  input[type=number],input[type=text],select{font-family:inherit;font-size:15px;padding:7px 8px;border:1px solid var(--linea);border-radius:2px;width:100%;text-align:right;color:var(--tinta);background:#fff}
+  select{text-align:left}
+  input[type=range]{width:100%;accent-color:var(--marca);height:26px}
+  .slidercab{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;color:var(--suave)}
+  .slidercab b{font-family:'Archivo Narrow';font-size:34px;color:var(--tinta)}
+  .escala{display:flex;justify-content:space-between;font-size:12px;color:var(--suave);margin-top:-4px}
+  .optimo{font-size:13px;color:var(--soya);font-weight:600;margin-top:6px}
+  .escen{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap}
+  .escen button{font-family:'Archivo Narrow';font-weight:600;font-size:14px;padding:7px 14px;border:1px solid var(--tinta);background:#fff;color:var(--tinta);border-radius:2px;cursor:pointer}
+  .escen button:hover,.escen button.on{background:var(--marca);border-color:var(--marca)}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:var(--panel)}
+  th,td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--linea)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{font-size:12.5px;color:var(--suave);font-weight:600}
+  td input{width:92px;padding:4px 6px;font-size:14px}
+  tfoot td{font-weight:700;border-top:2px solid var(--tinta)}
+  .pvt td:first-child{color:var(--soya);font-weight:600}
+  .desbal{color:var(--rojo)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px}
+  .kpi{background:var(--panel);border-left:7px solid var(--azul);padding:13px 15px}
+  .kpi b{display:block;font-family:'Archivo Narrow';font-size:30px;line-height:1.1}
+  .kpi small{color:var(--suave);display:block;font-size:12.5px}
+  .kpi.naranja{border-left-color:var(--naranja)}
+  .kpi.oro{border-left-color:var(--marca)}
+  .delta{font-size:13px;font-weight:700}
+  .up{color:var(--azul)}.down{color:var(--rojo)}
+  .sello{background:var(--azul);color:#fff;padding:12px 16px;margin-bottom:20px;font-size:14.5px}
+  .sello b{font-family:'Archivo Narrow';font-size:17px}
+  .sello.alerta{background:var(--rojo)}
+  .aviso{background:var(--panel);border-left:7px solid #6B7A6E;padding:11px 15px;margin-bottom:8px;font-size:14.5px}
+  .aviso b{font-family:'Archivo Narrow';font-size:16px;display:block;margin-bottom:2px}
+  .aviso span{color:var(--suave)}
+  .aviso b::before{font-size:12.5px;letter-spacing:.06em;margin-right:8px;padding:2px 7px;border-radius:2px;color:#fff;vertical-align:2px}
+  .aviso.critico{border-left-color:var(--rojo);background:#FDF0F1} .aviso.critico b{color:#A00114} .aviso.critico b::before{content:'■ DETENER';background:var(--rojo)}
+  .aviso.ojo{border-left-color:var(--naranja);background:#FEF5EC} .aviso.ojo b{color:#A64B00} .aviso.ojo b::before{content:'▲ AJUSTAR';background:var(--naranja)}
+  .aviso.bien{border-left-color:var(--azul);background:#EEF4FA} .aviso.bien b{color:#08477A} .aviso.bien b::before{content:'● EN RANGO';background:var(--azul)}
+  ul.notas{padding-left:18px;max-width:72ch;color:var(--suave)}
+  ul.notas li{margin-bottom:8px} ul.notas b{color:var(--tinta)}
+  .acciones{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .acciones button{font-family:'Archivo Narrow';font-weight:600;font-size:15px;padding:11px 20px;border:1px solid var(--tinta);border-radius:2px;cursor:pointer;background:#fff;color:var(--tinta)}
+  .acciones button.pri{background:var(--marca);border-color:var(--marca)}
+  footer{margin-top:34px;font-size:12.5px;color:var(--suave);border-top:1px solid var(--linea);padding-top:14px}
+  @media print{
+    body{background:#fff;font-size:11.5px}
+    .top{border-bottom:3px solid var(--tinta)}
+    .cabcli input{border-bottom:none}
+    input[type=range],.escen,.acciones,.escala{display:none}
+    td input,input[type=number],select{border:none;padding:0;background:none}
+    .kpi,.aviso,table{break-inside:avoid} h2{break-after:avoid}
+  }
+  @media (max-width:640px){.cabcli{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div class="in">
+  <img class="logo" alt="ALEN+PRO Nutrición Positiva" src="data:image/png;base64,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">
+  <div>
+    <h1>Calculadora de Formulación — Chorizo</h1>
+    <p>Proteína Texturizada de Soya PLUSS PRO · Nutrición Positiva</p>
+  </div>
+  <div class="cabcli">
+    Preparado para <input id="cliente" type="text" placeholder="nombre del cliente" autocomplete="off">
+    <span id="fecha"></span>
+  </div>
+</div></div>
+
+<div class="caja">
+  <div class="cols">
+    <div><label for="batch">Tamaño del batch (kg de masa)</label><input id="batch" type="number" value="100" min="1" step="10"></div>
+    <div><label for="peso">Peso por unidad (g)</label><input id="peso" type="number" value="100" min="20" step="10"></div>
+    <div><label for="ref">Referencia PVT</label>
+      <select id="ref"><option value="4275">Grueso o medio — $4.275/kg</option><option value="4750">Polvo — $4.750/kg</option></select></div>
+    <div><label for="meta">Objetivo proteico</label>
+      <select id="meta"><option value="1.00">Igualar el 100% cárnico</option><option value="1.05">Superarlo en 5%</option><option value="1.10">Superarlo en 10%</option></select></div>
+  </div>
+  <p class="pista" id="unid"></p>
+</div>
+
+<div class="caja">
+  <div class="slidercab"><span>Sustitución de carne por PVT hidratado</span><b><span id="sustTxt">50</span>%</b></div>
+  <input id="sust" type="range" min="0" max="60" step="5" value="50">
+  <div class="escala"><span>0%</span><span>60%</span></div>
+  <div class="optimo">Rango recomendado para embutido crudo o escaldado: 30–50%</div>
+  <div class="escen">
+    <button data-s="25" data-m="1.00">Entrada · 25%</button>
+    <button data-s="40" data-m="1.00">Estándar · 40%</button>
+    <button data-s="50" data-m="1.05">Rendimiento · 50%</button>
+  </div>
+</div>
+
+<div class="sello" id="sello"></div>
+
+<h2>Fórmula base — Chorizo (% sobre masa, editable)</h2>
+<p class="pista">Cargue la fórmula real del cliente en la columna del 100% cárnico. Debe sumar 100. Los gramos y costos se recalculan sobre el batch definido arriba.</p>
+<table>
+  <thead><tr><th>Ingrediente</th><th>% 100% cárnico</th><th>% con PVT</th><th>kg en batch</th><th>Costo COP/kg</th><th>Costo en batch</th></tr></thead>
+  <tbody id="form"></tbody>
+  <tfoot><tr><td>Total masa</td><td id="tot1"></td><td id="tot2"></td><td id="totkg"></td><td></td><td id="totcop"></td></tr></tfoot>
+</table>
+
+<h2>Beneficios cuantificados — inclusión de PVT PLUSS PRO</h2>
+<div class="grid" id="kpis"></div>
+
+<h2>Perfil nutricional estimado (por 100 g de masa)</h2>
+<table>
+  <thead><tr><th>Nutriente</th><th>100% cárnico</th><th>Con PVT</th><th>Cambio</th></tr></thead>
+  <tbody id="nutri"></tbody>
+</table>
+
+<h2>Indicadores técnicos</h2>
+<table>
+  <thead><tr><th>Indicador</th><th>Valor</th><th>Referencia</th></tr></thead>
+  <tbody id="tecn"></tbody>
+</table>
+
+<h2>Recomendaciones técnicas</h2>
+<div id="avisos"></div>
+
+<h2>Por qué funciona</h2>
+<ul class="notas">
+  <li><b>Rinde la carne y fija el agua.</b> Cada kilo de PVT seco incorpora entre 2 y 3 litros de agua que quedan retenidos en la matriz: no se pierden en cocción ni aparecen como sinéresis en el empaque.</li>
+  <li><b>Sostiene la proteína.</b> Con 50% de proteína en base seca, el PVT compensa la carne que sale. La herramienta calcula la hidratación exacta para que la declaración proteica no baje.</li>
+  <li><b>Emulsifica y estabiliza.</b> Reduce separación de grasa en cocción y permite bajar parte del almidón sin perder ligado.</li>
+  <li><b>Mejora el perfil.</b> Sale grasa saturada y colesterol, entra fibra dietaria. El perfil de aminoácidos de la soya complementa al de la carne.</li>
+  <li><b>Textura según referencia.</b> Grueso y medio dan fibra visible al corte; el polvo trabaja mejor en emulsión fina.</li>
+</ul>
+
+<div class="acciones">
+  <button class="pri" onclick="window.print()">⬇ Exportar PDF</button>
+  <button id="reset">↺ Restablecer</button>
+</div>
+
+<footer>
+  Ficha técnica PLUSS PRO PVT · Alimento Energético Proteico S.A.S. · NIT 800.183.642-5 · www.alenpro.co<br>
+  Valores nutricionales y de rendimiento estimados sobre masa cruda, de carácter referencial. No sustituyen el análisis bromatológico ni la validación en planta del producto terminado.
+</footer>
+</div>
+
+<script>
+const ING = {
+  cerdo:   {n:'Carne de cerdo magra', p:20.0,g:6.0, c:0,   f:0,  h:72,col:70,pr:15500},
+  res:     {n:'Carne de res magra',   p:21.0,g:5.0, c:0,   f:0,  h:72,col:65,pr:17000},
+  grasa:   {n:'Papada / grasa dorsal',p:3.0, g:85.0,c:0,   f:0,  h:11,col:95,pr:6500},
+  pvt:     {n:'PVT PLUSS PRO (seco)', p:50.0,g:1.5, c:32.0,f:3.5,h:8, col:0, pr:4275},
+  agua:    {n:'Agua de hidratación',  p:0,g:0,c:0,f:0,h:100,col:0,pr:0},
+  hielo:   {n:'Hielo',                p:0,g:0,c:0,f:0,h:100,col:0,pr:0},
+  almidon: {n:'Almidón / fécula',     p:0.5, g:0.2, c:83.0,f:1.0,h:12,col:0, pr:4200},
+  cond:    {n:'Sal, condimentos y aditivos',p:2.0,g:1.0,c:8.0,f:0.5,h:5,col:0,pr:11000}
+};
+const PR0 = {}; Object.keys(ING).forEach(k=>PR0[k]=ING[k].pr);
+const BASE = {cerdo:45,res:10,grasa:25,hielo:12,almidon:4,cond:4};
+const BASE0 = Object.assign({},BASE);
+const RMIN=1.8, RMAX=3.2;
+const $=id=>document.getElementById(id);
+
+function control(){const f={};for(const k in ING)f[k]=BASE[k]||0;return f;}
+function nutrir(f){
+  const r={p:0,g:0,c:0,fi:0,col:0,hum:0,costo:0};
+  for(const k in f){const i=ING[k],q=(f[k]||0)/100;
+    r.p+=i.p*q;r.g+=i.g*q;r.c+=i.c*q;r.fi+=i.f*q;r.col+=i.col*q;r.hum+=i.h*q;r.costo+=i.pr*(f[k]||0)/100;}
+  r.kcal=r.p*4+r.g*9+(r.c-r.fi)*4+r.fi*2;
+  return r;
+}
+function balancear(s,meta){
+  const f={cerdo:0,res:0,grasa:0,pvt:0,agua:0,hielo:0,almidon:0,cond:0};
+  f.cerdo=BASE.cerdo*(1-s); f.res=BASE.res*(1-s);
+  f.grasa=BASE.grasa*(1-s*0.4); f.almidon=BASE.almidon*(1-s*0.5); f.cond=BASE.cond;
+  if(s===0){f.hielo=BASE.hielo;return {f,r:null,ajuste:null};}
+  const H=(BASE.cerdo+BASE.res)*s+(BASE.grasa-f.grasa)+(BASE.almidon-f.almidon)+BASE.hielo;
+  const objetivo=nutrir(control()).p*meta;
+  const resto=(f.cerdo*ING.cerdo.p+f.res*ING.res.p+f.grasa*ING.grasa.p+f.almidon*ING.almidon.p+f.cond*ING.cond.p)/100;
+  let seco=Math.max(0,(objetivo-resto)*100/ING.pvt.p);
+  let r=seco>0?H/seco-1:RMAX, ajuste=null;
+  if(r>RMAX){r=RMAX;ajuste='exceso';} if(r<RMIN){r=RMIN;ajuste='falta';}
+  seco=H/(1+r); f.pvt=seco; f.agua=H-seco; f.hielo=0;
+  return {f,r,ajuste};
+}
+const n2=v=>v.toLocaleString('es-CO',{minimumFractionDigits:2,maximumFractionDigits:2});
+const n1=v=>v.toLocaleString('es-CO',{minimumFractionDigits:1,maximumFractionDigits:1});
+const cop=v=>'$'+Math.round(v).toLocaleString('es-CO');
+function delta(a,b,inv){const d=b-a;if(Math.abs(d)<0.05)return '<span class="delta">igual</span>';
+  const bueno=inv?d<0:d>0, pct=a>0?' ('+(d>0?'+':'')+Math.round(d/a*100)+'%)':'';
+  return '<span class="delta '+(bueno?'up':'down')+'">'+(d>0?'+':'')+n1(d)+pct+'</span>';}
+
+function diagnosticar(s,sol,B,nA,nB){
+  const a=[],r=sol.r,seco=B.pvt,grasa=nB.g,ref=+$('ref').value;
+  const t1=Object.keys(BASE).reduce((x,k)=>x+(BASE[k]||0),0);
+  if(Math.abs(t1-100)>0.01) a.push({t:'critico',h:'La fórmula base suma '+n2(t1)+', no 100',d:'Los valores nutricionales y de costo se calculan sobre una masa que no cierra. Ajuste las cantidades del 100% cárnico antes de presentar resultados.'});
+  if(s===0){a.push({t:'',h:'Fórmula de referencia',d:'Sin inclusión de PVT. Mueva el control para comparar contra esta línea base.'});return a;}
+  if(sol.ajuste==='falta') a.push({t:'critico',h:'Hidratación bajo 1:1,8',d:'El objetivo proteico exige tanto texturizado que casi no queda agua. Baje el objetivo o la sustitución: la masa saldría seca y con partícula dura.'});
+  else if(r<2.1) a.push({t:'ojo',h:'Hidratación baja (1:'+n1(r)+')',d:'Hidrate el PVT por separado y déjelo reposar 20 minutos antes de mezclar, o tomará agua de la carne y quedará partícula seca.'});
+  else if(r>3.0) a.push({t:'ojo',h:'Hidratación alta (1:'+n1(r)+')',d:'Mucha agua por kilo de texturizado. Suba el objetivo proteico o la sustitución, o valide retención en cocción antes de escalar.'});
+  else a.push({t:'bien',h:'Hidratación en rango óptimo (1:'+n1(r)+')',d:'El texturizado toma el agua completa y aporta mordida sin comprometer jugosidad.'});
+  if(s>=50) a.push({t:'ojo',h:'Reforzar color y sabor cárnico',d:'Sobre 50% el color palidece de forma visible. Suba pimentón u oleorresina de páprika entre 15 y 25% y refuerce las notas cárnicas del condimento.'});
+  else if(s>=30) a.push({t:'ojo',h:'Ajuste leve de color',d:'El color baja poco pero se nota al corte. Un incremento de 10% en pimentón suele bastar.'});
+  else a.push({t:'bien',h:'Zona sin ajuste sensorial',d:'Por debajo de 30% la sustitución pasa prácticamente inadvertida en color, sabor y textura.'});
+  if(grasa<12) a.push({t:'critico',h:'Grasa bajo 12 g/100 g',d:'Riesgo de producto seco y quebradizo. Suba la papada antes de bajar más la carne.'});
+  else if(grasa<16) a.push({t:'ojo',h:'Grasa en el límite bajo',d:'Nutricionalmente favorable, pero vigile jugosidad y merma en parrilla.'});
+  if(s>=40) a.push({t:'ojo',h:'Revise sal y fosfatos',d:'La fase acuosa creció: a igual dosificación baja la percepción salada. Suba la sal 5–10% y calcule el fosfato sobre la nueva humedad.'});
+  if(B.almidon<2.2) a.push({t:'bien',h:'Menos almidón, mismo ligado',d:'La proteína de soya asume parte de la función ligante: el almidón baja a '+n2(B.almidon)+'%. Mejora el corte y reduce la sensación gomosa.'});
+  if(seco>=12) a.push({t:'ojo',h:'Inclusión alta de PVT ('+n1(seco)+'%)',d:'Verifique el orden de la lista de ingredientes en el rótulo. A esta inclusión la soya puede quedar entre los primeros.'});
+  else a.push({t:'bien',h:'Soya como alérgeno',d:'Declárela en la etiqueta aunque la inclusión sea moderada.'});
+  if(ref===4750&&s>=40) a.push({t:'',h:'Considere grueso o medio',d:'A esta sustitución el polvo aporta poca estructura visible. El grueso o medio da la fibra al corte que el consumidor lee como carne.'});
+  if(ref===4275&&s>=50) a.push({t:'',h:'Pruebe una mezcla de referencias',d:'70% grueso con 30% polvo suele dar mordida y a la vez una matriz más homogénea al embutir.'});
+  const ah=nA.costo-nB.costo;
+  if(ah>0) a.push({t:'bien',h:'Ahorro sostenido con igual proteína',d:cop(ah)+' menos por kilo de masa sin ceder aporte proteico. Valide con un piloto de 50 kg y medición de merma en cocción antes de escalar.'});
+  return a;
+}
+
+function render(){
+  const s=+$('sust').value, meta=+$('meta').value;
+  const batch=Math.max(1,+$('batch').value||100), peso=Math.max(20,+$('peso').value||100);
+  $('sustTxt').textContent=s;
+  const A=control(), sol=balancear(s/100,meta), B=sol.f;
+  const nA=nutrir(A), nB=nutrir(B);
+  const t2=Object.values(B).reduce((a,b)=>a+b,0);
+  $('unid').textContent='Unidades estimadas de '+peso+' g: '+Math.floor(batch*1000/peso).toLocaleString('es-CO')+' · costo con PVT '+cop(nB.costo*peso/1000)+' por unidad';
+
+  $('form').innerHTML=Object.keys(ING).map(k=>{
+    const b=B[k]||0, kg=b*batch/100;
+    if(k==='pvt'||k==='agua'){
+      if(b<0.01)return '';
+      return '<tr class="pvt"><td>'+ING[k].n+'</td><td>—</td><td>'+n2(b)+'</td><td>'+n2(kg)+'</td><td>'+(ING[k].pr>0?'<input type="number" data-p="'+k+'" value="'+ING[k].pr+'" step="25" min="0">':'—')+'</td><td>'+cop(ING[k].pr*kg)+'</td></tr>';
+    }
+    return '<tr><td>'+ING[k].n+'</td><td><input type="number" data-b="'+k+'" value="'+(BASE[k]||0)+'" step="0.5" min="0" max="100"></td><td>'+n2(b)+'</td><td>'+n2(kg)+'</td><td>'+(ING[k].pr>0?'<input type="number" data-p="'+k+'" value="'+ING[k].pr+'" step="50" min="0">':'—')+'</td><td>'+cop(ING[k].pr*kg)+'</td></tr>';
+  }).join('');
+  const t1=Object.keys(BASE).reduce((x,k)=>x+(BASE[k]||0),0);
+  $('tot1').textContent=n2(t1); $('tot1').className=Math.abs(t1-100)>0.01?'desbal':'';
+  $('tot2').textContent=n2(t2);
+  $('totkg').textContent=n2(t2*batch/100)+' kg';
+  $('totcop').textContent=cop(nB.costo*batch);
+  document.querySelectorAll('#form input[data-b]').forEach(i=>i.addEventListener('change',e=>{BASE[e.target.dataset.b]=Math.max(0,+e.target.value||0);render();}));
+  document.querySelectorAll('#form input[data-p]').forEach(i=>i.addEventListener('change',e=>{ING[e.target.dataset.p].pr=Math.max(0,+e.target.value||0);render();}));
+
+  const sello=$('sello');
+  if(s===0){sello.className='sello';sello.innerHTML='Fórmula de referencia 100% cárnica. Mueva el control para rendir la carne.';}
+  else if(sol.ajuste==='falta'){sello.className='sello alerta';sello.innerHTML='<b>Hidratación en el límite (1:'+n1(sol.r)+').</b> El objetivo proteico exige un texturizado poco hidratado. Baje el objetivo o la sustitución.';}
+  else{sello.className='sello';sello.innerHTML='<b>Balanceado a 1:'+n1(sol.r)+' de hidratación.</b> Proteína '+n1(nB.p)+' g/100 g frente a '+n1(nA.p)+' g del 100% cárnico, con '+cop(nA.costo-nB.costo)+' menos por kilo de masa.';}
+
+  $('nutri').innerHTML=[['Proteína (g)',nA.p,nB.p,false],['Grasa total (g)',nA.g,nB.g,true],
+    ['Carbohidratos (g)',nA.c,nB.c,true],['Fibra dietaria (g)',nA.fi,nB.fi,false],
+    ['Colesterol (mg)',nA.col,nB.col,true],['Humedad (g)',nA.hum,nB.hum,true],['Energía (kcal)',nA.kcal,nB.kcal,true]]
+    .map(([t,a,b,inv])=>'<tr><td>'+t+'</td><td>'+n1(a)+'</td><td>'+n1(b)+'</td><td>'+delta(a,b,inv)+'</td></tr>').join('');
+
+  const carneFuera=(A.cerdo+A.res+A.grasa)-(B.cerdo+B.res+B.grasa);
+  const rinde=B.pvt>0?carneFuera/B.pvt:0;
+  $('tecn').innerHTML=[
+    ['Relación de hidratación del PVT', sol.r?('1:'+n1(sol.r)):'—','1:2,1 a 1:3,0'],
+    ['PVT seco requerido', n2(B.pvt*batch/100)+' kg','por batch de '+batch+' kg'],
+    ['Agua de hidratación', n2(B.agua*batch/100)+' L','se retiene en la matriz'],
+    ['Carne y grasa desplazada', n2(carneFuera*batch/100)+' kg','por batch'],
+    ['Rendimiento del PVT', n1(rinde)+' kg de carne por kg de PVT','—'],
+    ['Humedad final estimada', n1(nB.hum)+'%','control '+n1(nA.hum)+'%'],
+    ['Costo por kg de masa', cop(nB.costo),'control '+cop(nA.costo)],
+    ['Costo por unidad de '+peso+' g', cop(nB.costo*peso/1000),'control '+cop(nA.costo*peso/1000)]
+  ].map(f=>'<tr><td>'+f[0]+'</td><td>'+f[1]+'</td><td>'+f[2]+'</td></tr>').join('');
+
+  $('avisos').innerHTML=diagnosticar(s,sol,B,nA,nB).map(a=>'<div class="aviso '+a.t+'"><b>'+a.h+'</b><span>'+a.d+'</span></div>').join('');
+
+  const ahorro=nA.costo-nB.costo;
+  $('kpis').innerHTML=
+   '<div class="kpi oro"><small>Cada kilo de PVT rinde</small><b>'+n1(rinde)+' kg</b><small>de carne y grasa desplazada</small></div>'+
+   '<div class="kpi"><small>Ahorro por kg de masa</small><b>'+cop(ahorro)+'</b><small>'+(nA.costo>0?Math.round(ahorro/nA.costo*100):0)+'% del costo de materia prima</small></div>'+
+   '<div class="kpi"><small>Ahorro en el batch de '+batch+' kg</small><b>'+cop(ahorro*batch)+'</b><small>a igual aporte proteico</small></div>'+
+   '<div class="kpi"><small>Ahorro por tonelada</small><b>'+cop(ahorro*1000)+'</b><small>proyección mensual según volumen</small></div>'+
+   '<div class="kpi"><small>Proteína por 100 g</small><b>'+n1(nB.p)+' g</b><small>referencia '+n1(nA.p)+' g</small></div>'+
+   '<div class="kpi naranja"><small>Grasa por 100 g</small><b>'+n1(nB.g)+' g</b><small>referencia '+n1(nA.g)+' g · colesterol '+Math.round(nB.col)+' mg</small></div>';
+}
+['sust','meta','ref','batch','peso'].forEach(id=>$(id).addEventListener('input',e=>{
+  if(id==='ref')ING.pvt.pr=+e.target.value;
+  if(id==='sust')document.querySelectorAll('.escen button').forEach(x=>x.classList.remove('on'));
+  render();}));
+document.querySelectorAll('.escen button').forEach(b=>b.addEventListener('click',()=>{
+  $('sust').value=b.dataset.s; $('meta').value=b.dataset.m;
+  document.querySelectorAll('.escen button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); render();}));
+$('reset').addEventListener('click',()=>{
+  Object.keys(BASE0).forEach(k=>BASE[k]=BASE0[k]);
+  Object.keys(PR0).forEach(k=>ING[k].pr=PR0[k]);
+  $('sust').value=50; $('meta').value='1.05'; $('ref').value='4275'; $('batch').value=100; $('peso').value=100;
+  document.querySelectorAll('.escen button').forEach(x=>x.classList.remove('on'));
+  render();});
+$('fecha').textContent=new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'});
+render();
+</script>
+</body>
+</html>
