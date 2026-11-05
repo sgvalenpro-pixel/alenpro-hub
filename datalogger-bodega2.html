@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFD400">
+<title>Medición Bodega 2 — APu ALEN+PRO</title>
+<script>
+  // Acceso solo con sesión iniciada en APu (misma pestaña)
+  (function(){
+    try {
+      var s = JSON.parse(sessionStorage.getItem('apu_session') || 'null');
+      if (!s || !s.user) { location.replace('index.html'); }
+    } catch (e) { location.replace('index.html'); }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Ficha de control: barra de marca, contador grande, barra de memoria, ficha técnica de la medición */
+:root{
+  --yellow:#FFD400;
+  --ink:#1D1D1B;
+  --bg:#FFFFFF;
+  --fg:#1D1D1B;
+  --muted:#5E5D58;
+  --line:#E4E2D8;
+  --track:#F3F1E7;
+  --font-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-num:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-display);font-size:15px;line-height:1.5}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.top{background:#fff;border-bottom:5px solid var(--yellow)}
+.top .wrap{padding-block:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.top img{height:44px;width:auto}
+.top .meta{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.back{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;font-size:13px;padding:8px 14px;border-radius:8px}
+.back:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+main .wrap{padding-block:28px 48px;display:grid;gap:30px}
+h1{font-weight:800;font-size:clamp(24px,5vw,34px);line-height:1.12;margin:0;text-wrap:balance}
+.lead{margin:8px 0 0;color:var(--muted);max-width:62ch}
+.label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.counter{display:grid;gap:6px}
+.big{display:flex;flex-wrap:wrap;gap:4px 20px;align-items:baseline}
+.unit{display:flex;align-items:baseline;gap:6px}
+.unit b{font-family:var(--font-num);font-weight:700;font-size:clamp(48px,13vw,88px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-0.03em}
+.unit span{font-weight:600;font-size:18px;color:var(--muted)}
+.unit.days b{background:linear-gradient(transparent 62%, var(--yellow) 62%);padding:0 4px}
+.since{color:var(--muted);font-size:14px}
+.mem{display:grid;gap:10px}
+.memhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.memhead strong{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+.bar{height:18px;background:var(--track);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.fill{height:100%;background:var(--yellow);width:0}
+.memfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.memfoot b{color:var(--fg);font-family:var(--font-num);font-weight:700;font-variant-numeric:tabular-nums}
+h2{font-weight:700;font-size:18px;margin:0 0 4px}
+dl{display:grid;grid-template-columns:minmax(120px,190px) 1fr;margin:0;border-top:2px solid var(--fg)}
+dt,dd{margin:0;padding:10px 0;border-bottom:1px solid var(--line)}
+dt{color:var(--muted);font-size:13px;padding-right:12px}
+dd{min-width:0}
+.num{font-family:var(--font-num);font-variant-numeric:tabular-nums;font-size:14px}
+.note{font-size:13px;color:var(--muted);border-left:4px solid var(--yellow);padding:4px 0 4px 12px;margin:0;max-width:68ch}
+@media (max-width:480px){dl{grid-template-columns:1fr}dt{padding-bottom:0;border-bottom:0}dd{padding-top:2px}.top .meta{margin-left:0;width:100%;justify-content:space-between}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <img src="logo.png" alt="ALEN+PRO">
+    <div class="meta">
+      <span id="user"></span>
+      <a class="back" href="index.html">← Volver a APu</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section>
+      <span class="label">Calidad · Control de almacenamiento</span>
+      <h1>Medición de temperatura y humedad, Bodega 2</h1>
+      <p class="lead">Datalogger CEM DT-172 registrando cada 5 minutos el producto terminado de nutrición humana.</p>
+    </section>
+
+    <section class="counter" aria-live="polite">
+      <span class="label">Tiempo de medición</span>
+      <div class="big">
+        <div class="unit days"><b id="d">0</b><span>días</span></div>
+        <div class="unit"><b id="h">0</b><span>h</span></div>
+        <div class="unit"><b id="m">0</b><span>min</span></div>
+      </div>
+      <span class="since">Desde el <span id="start">15 oct 2026, 10:28</span> · actualizado <span id="now">—</span></span>
+    </section>
+
+    <section class="mem">
+      <div class="memhead">
+        <span class="label">Memoria del equipo</span>
+        <span><strong id="pct">0 %</strong> usada · <strong id="reads">0</strong> de 16.350 lecturas</span>
+      </div>
+      <div class="bar" role="progressbar" aria-label="Memoria usada" aria-valuemin="0" aria-valuemax="100" id="bar"><div class="fill" id="fill"></div></div>
+      <div class="memfoot">
+        <span>Quedan <b id="left">—</b></span>
+        <span>Memoria llena aprox.: <b id="end">—</b></span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ficha de la medición</h2>
+      <dl>
+        <dt>Equipo</dt><dd>CEM DT-172, temperatura y humedad relativa</dd>
+        <dt>Ubicación</dt><dd>Bodega 2 · PTSG, PTSM, PTSP, SPF-05</dd>
+        <dt>Intervalo</dt><dd class="num">5 min</dd>
+        <dt>Alarma temperatura</dt><dd><span class="num">12 – 33 °C</span> (fichas técnicas)</dd>
+        <dt>Alarma humedad</dt><dd><span class="num">30 – 75 % HR</span> (criterio interno)</dd>
+        <dt>Medición anterior</dt><dd>2 al 8 de octubre: <span class="num">5,2 h</span> sobre 33 °C y <span class="num">56,2 h</span> sobre 75 % HR</dd>
+      </dl>
+    </section>
+
+    <p class="note">El contador parte de la hora en que se configuró el equipo. El arranque se hace a mano en la bodega, así que la fecha exacta de inicio se confirma al descargar los datos. Al descargar, la medición se detiene.</p>
+  </div>
+</main>
+
+<script>
+(function(){
+  // Datos de la medición en curso: actualizar aquí al iniciar una nueva medición
+  var START = new Date('2026-10-15T10:28:00-05:00').getTime();
+  var INTERVAL_MS = 5 * 60 * 1000;
+  var CAPACITY = 16350; // lecturas por canal con intervalo de 5 min (56 d 18 h 30 min)
+
+  var END = START + CAPACITY * INTERVAL_MS;
+  var DAY = 86400000;
+  var tz = 'America/Bogota';
+  var fmtN = new Intl.NumberFormat('es-CO');
+  var fmtDate = new Intl.DateTimeFormat('es-CO',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz});
+  var fmtNow = new Intl.DateTimeFormat('es-CO',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',hour12:true,timeZone:tz});
+  function $(id){return document.getElementById(id)}
+  try { var s = JSON.parse(sessionStorage.getItem('apu_session') || 'null'); if (s && s.user) $('user').textContent = s.user; } catch (e) {}
+  $('start').textContent = fmtDate.format(new Date(START));
+  $('end').textContent = fmtDate.format(new Date(END));
+  function tick(){
+    var now = Date.now();
+    var el = Math.max(0, Math.min(now, END) - START);
+    $('d').textContent = Math.floor(el / DAY);
+    $('h').textContent = Math.floor(el % DAY / 3600000);
+    $('m').textContent = Math.floor(el % 3600000 / 60000);
+    var reads = Math.min(CAPACITY, Math.floor(el / INTERVAL_MS));
+    var pct = Math.min(100, reads / CAPACITY * 100);
+    $('pct').textContent = Math.round(pct) + ' %';
+    $('reads').textContent = fmtN.format(reads);
+    $('fill').style.width = pct.toFixed(2) + '%';
+    $('bar').setAttribute('aria-valuenow', Math.round(pct));
+    var left = END - now;
+    $('left').textContent = left <= 0 ? 'memoria llena: descargar datos' : (Math.floor(left / DAY) + ' días ' + Math.floor(left % DAY / 3600000) + ' h');
+    $('now').textContent = fmtNow.format(new Date(now));
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
+</script>
+</body>
+</html>
